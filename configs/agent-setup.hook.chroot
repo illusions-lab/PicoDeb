@@ -27,5 +27,10 @@ fi
 printf '%s\n' 'agent ALL=(ALL) NOPASSWD:ALL' > /etc/sudoers.d/agent
 chmod 0440 /etc/sudoers.d/agent
 
-systemctl enable agent-desktop.service
+# Conservative startup: keep the live system stable by booting to the console
+# first, without forcing the X/Openbox desktop at boot time.
+systemctl set-default multi-user.target
+
+# Leave the graphical session enabled for manual startup later, but do not auto-launch it.
+# systemctl enable agent-desktop.service
 systemctl enable ssh.service

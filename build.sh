@@ -86,7 +86,6 @@ lb config \
   --binary-image iso \
   --bootloaders grub-efi \
   --debian-installer none \
-  --linux-packages none \
   --apt-recommends false \
   --image-name agent-desktop
 
