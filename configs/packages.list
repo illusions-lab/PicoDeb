@@ -1,0 +1,15 @@
+linux-image-arm64
+systemd-sysv
+dbus
+xserver-xorg-core
+xserver-xorg-video-fbdev
+x11-xserver-utils
+xinit
+openbox
+openssh-server
+sudo
+curl
+ca-certificates
+python3-minimal
+xdotool
+maim

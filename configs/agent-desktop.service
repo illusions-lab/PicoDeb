@@ -1,0 +1,18 @@
+[Unit]
+Description=Direct Agent Desktop Session
+After=systemd-user-sessions.service network.target
+
+[Service]
+Type=simple
+User=agent
+Group=agent
+PAMName=login
+Environment=DISPLAY=:0
+Environment=XDG_SESSION_TYPE=x11
+Environment=HOME=/home/agent
+ExecStart=/usr/bin/xinit /usr/bin/openbox-session -- /usr/bin/X :0 vt7 -nolisten tcp -nocursor -s 0 -dpms
+Restart=always
+RestartSec=1
+
+[Install]
+WantedBy=multi-user.target

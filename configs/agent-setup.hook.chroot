@@ -1,0 +1,31 @@
+#!/bin/sh
+set -eu
+
+for group in video input; do
+    if ! getent group "${group}" >/dev/null; then
+        groupadd "${group}"
+    fi
+done
+
+useradd --create-home --shell /bin/bash --groups sudo,video,input agent
+passwd --lock agent
+
+install -d -o agent -g agent -m 0700 /home/agent/.config/openbox
+cat > /home/agent/.config/openbox/autostart <<'EOF'
+xset s off &
+xset -dpms &
+xset s noblank &
+EOF
+chown agent:agent /home/agent/.config/openbox/autostart
+
+if [ -f /home/agent/.ssh/authorized_keys ]; then
+    chown -R agent:agent /home/agent/.ssh
+    chmod 0700 /home/agent/.ssh
+    chmod 0600 /home/agent/.ssh/authorized_keys
+fi
+
+printf '%s\n' 'agent ALL=(ALL) NOPASSWD:ALL' > /etc/sudoers.d/agent
+chmod 0440 /etc/sudoers.d/agent
+
+systemctl enable agent-desktop.service
+systemctl enable ssh.service
